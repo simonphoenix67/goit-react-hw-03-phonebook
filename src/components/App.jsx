@@ -6,25 +6,41 @@ import {ContactList} from './contacts/ContactList';
 
 export class App extends Component {
 
-  state = {
-  contacts: [],
-  name: ''
-  }
+ state = {
+  contacts: [
+    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+  ],
+  filter: '',
+  name: '',
+  number: ''
+ }
+
+
+
 
    handleNameChange = (event) => {
     this.setState({ name: event.target.value });
+   }
+
+  handleNumberChange = (event) => {
+    this.setState({ number: event.target.value });
   }
 
   handleSubmit = (event) => {
   event.preventDefault();
-  const { name, contacts } = this.state;
+  const { name, number, contacts } = this.state;
   const newContact = {
     id: nanoid(),
-    name: name
+    name,
+    number
   };
   this.setState({
     contacts: [...contacts, newContact],
-    name: ''
+    name: '',
+    number: ''
   });
     //  console.log(this.state.name);
   }
@@ -37,10 +53,17 @@ export class App extends Component {
       name: '',
       number: ''
     });
+    }
+
+   handleFilterChange = (event) => {
+    this.setState({ filter: event.target.value });
   }
 
   render() {
-    const { contacts } = this.state;
+    const { contacts, filter, name, number } = this.state;
+    const filteredContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    )
 
     return (
       <>
@@ -65,7 +88,14 @@ export class App extends Component {
 />
         <button type="submit">Add contact</button>
         </form>
-        <ContactList contacts={this.state.contacts} />
+        <label htmlFor="filter">Find contacts by name:</label>
+        <input
+          type="text"
+          name="filter"
+          value={filter}
+          onChange={this.handleFilterChange}
+        />
+        <ContactList contacts={filteredContacts} />
         {/* <ul>
           {contacts.map(contact => (
             <li key={contact.id}>{contact.name}</li>
