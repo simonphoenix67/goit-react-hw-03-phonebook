@@ -26,9 +26,19 @@ export class App extends Component {
     name: ''
   });
     //  console.log(this.state.name);
-}
+  }
+
+    handleAddContact = () => {
+    const { name, contacts } = this.state;
+    const newContact = { id: nanoid(), name };
+    this.setState({
+      contacts: [...contacts, newContact],
+      name: ''
+    });
+  }
 
   render() {
+    const { contacts } = this.state;
 
     return (
       <>
@@ -45,7 +55,11 @@ export class App extends Component {
         />
         <button type="submit">Add contact</button>
         </form>
-
+        <ul>
+          {contacts.map(contact => (
+            <li key={contact.id}>{contact.name}</li>
+          ))}
+        </ul>
 
       </>
 
