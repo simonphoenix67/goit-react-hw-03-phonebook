@@ -2,6 +2,7 @@ import { render } from "@testing-library/react";
 import React, { Component } from "react";
 import { nanoid } from 'nanoid';
 // model.id = nanoid()
+import {ContactList} from './contacts/ContactList';
 
 export class App extends Component {
 
@@ -33,7 +34,8 @@ export class App extends Component {
     const newContact = { id: nanoid(), name };
     this.setState({
       contacts: [...contacts, newContact],
-      name: ''
+      name: '',
+      number: ''
     });
   }
 
@@ -42,7 +44,7 @@ export class App extends Component {
 
     return (
       <>
-         <form action="">
+         <form onSubmit={this.handleSubmit}>
        <label htmlFor="name">Name:</label>
       <input
         type="text"
@@ -52,14 +54,23 @@ export class App extends Component {
         required
         value={this.state.name}
         onChange={this.handleNameChange}
-        />
+          />
+          <label htmlFor="name">Number:</label>
+          <input
+            type="tel"
+            name="number"
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            required
+/>
         <button type="submit">Add contact</button>
         </form>
-        <ul>
+        <ContactList contacts={this.state.contacts} />
+        {/* <ul>
           {contacts.map(contact => (
             <li key={contact.id}>{contact.name}</li>
           ))}
-        </ul>
+        </ul> */}
 
       </>
 
