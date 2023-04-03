@@ -114,7 +114,8 @@
 import React, { Component } from 'react';
 import {ContactForm} from './ContactForm/ContactForm';
 import {Filter} from './filter/filter';
-import {ContactList} from './contacts/ContactList';
+import { ContactList } from './contacts/ContactList';
+import { nanoid } from 'nanoid';
 
 export class App extends Component {
   state = {
@@ -122,11 +123,50 @@ export class App extends Component {
     filter: '',
   };
 
-  addContact = (newContact) => {
-    this.setState((prevState) => ({
-      contacts: [...prevState.contacts, newContact],
-    }));
-  };
+//   addContact = ({ name, number }) => {
+
+//     const contact = {
+//       id: nanoid(),
+//       name,
+//       number,
+//     };
+
+//     this.state.contacts.some(
+//       i => (i.name.toLowerCase() === contact.name.toLowerCase()
+//         && i.number === contact.number)
+//         || i.number === contact.number)
+//       ? alert(`${name} is already in contacts`)
+//       : this.setState(({ contacts }) => ({
+//         contacts: [contact, ...contacts],
+//       }))
+
+//     // const newContact = { id: nanoid(), name, number };
+//     // this.setState((prevState) => ({
+//     //   contacts: [...prevState.contacts, newContact],
+//     // }));
+//  };
+
+  addContact = ({ name, number }) => {
+
+    const contact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+
+    const isContactExists = this.state.contacts.some(
+      i => (i.name.toLowerCase() === contact.name.toLowerCase() && i.number === contact.number)
+    );
+
+    if (isContactExists) {
+      alert(`${name} is already in contacts`);
+    } else {
+      this.setState(({ contacts }) => ({
+        contacts: [contact, ...contacts],
+      }));
+    }
+
+ };
 
   changeFilter = (event) => {
     this.setState({ filter: event.target.value });
@@ -139,6 +179,12 @@ export class App extends Component {
     );
   };
 
+  deleteContact = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+    }));
+  };
+
   render() {
     const { filter } = this.state;
     const filteredContacts = this.getFilteredContacts();
@@ -146,10 +192,14 @@ export class App extends Component {
     return (
       <div>
         <h1>Phonebook</h1>
-        <ContactForm onAddContact={this.addContact} />
+        {/* <ContactForm onAddContact={this.addContact} /> */}
+        <ContactForm onSubmit={this.addContact} contacts={this.state.contacts} />
+        {/* <ContactForm contacts={this.state.contacts} onSubmit={this.addContact} /> */}
         <h2>Contacts</h2>
         <Filter value={filter} onChangeFilter={this.changeFilter} />
+
         <ContactList contacts={filteredContacts} />
+
       </div>
     );
   }

@@ -1,27 +1,52 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+
+
 export class ContactForm extends Component {
-  static propTypes = {
-    onAddContact: PropTypes.func.isRequired,
-  };
+
+
+  // static propTypes = {
+  //   onSubmit: PropTypes.func.isRequired,
+  // };
 
   state = {
     name: '',
     number: '',
   };
 
+   handleChange = (event) => {
+    const { name, value } = event.currentTarget;
+    this.setState({ [name]: value });
+  };
+
+
   handleSubmit = (event) => {
     event.preventDefault();
     const { name, number } = this.state;
-    this.props.onAddContact({ name, number });
+    const { contacts } = this.props;
+
+     const isNameExist = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase());
+
+     if (isNameExist) {
+       alert(`${name} is already in contacts`);
+       return;
+    }
+
+    // this.props.onAddContact({ name, number });
+    // this.setState({ name: '', number: '' });
+
+
+    // this.props.onSubmit(name, number);
+    this.props.onSubmit({ name, number });
+    // this.reset();
     this.setState({ name: '', number: '' });
   };
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+    reset = () => {
+    this.setState({ name: '', number: '' });
   };
+
 
   render() {
     const { name, number } = this.state;
@@ -53,3 +78,9 @@ export class ContactForm extends Component {
   }
 }
 
+
+// ContactForm.propTypes = {
+//   name: PropTypes.string.isRequired,
+//   number: PropTypes.number.isRequired,
+//   onSubmit: PropTypes.func.isRequired,
+// };
