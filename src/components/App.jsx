@@ -198,7 +198,7 @@ export class App extends Component {
         <h2>Contacts</h2>
         <Filter value={filter} onChangeFilter={this.changeFilter} />
 
-        <ContactList contacts={filteredContacts} />
+        <ContactList contacts={filteredContacts} deleteContact={this.deleteContact}/>
 
       </div>
     );
