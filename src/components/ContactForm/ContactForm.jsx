@@ -5,11 +5,6 @@ import PropTypes from 'prop-types';
 
 export class ContactForm extends Component {
 
-
-  // static propTypes = {
-  //   onSubmit: PropTypes.func.isRequired,
-  // };
-
   state = {
     name: '',
     number: '',
@@ -33,11 +28,6 @@ export class ContactForm extends Component {
        return;
     }
 
-    // this.props.onAddContact({ name, number });
-    // this.setState({ name: '', number: '' });
-
-
-    // this.props.onSubmit(name, number);
     this.props.onSubmit({ name, number });
     // this.reset();
     this.setState({ name: '', number: '' });
@@ -78,9 +68,6 @@ export class ContactForm extends Component {
   }
 }
 
-
-// ContactForm.propTypes = {
-//   name: PropTypes.string.isRequired,
-//   number: PropTypes.number.isRequired,
-//   onSubmit: PropTypes.func.isRequired,
-// };
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
